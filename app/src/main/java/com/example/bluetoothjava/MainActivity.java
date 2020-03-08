@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -29,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothReceiver bluetoothReceiver;
     private static final int LOCATION_PERMISSION_Request=5;
     private BluetoothSocket socket;
-    private Set<BluetoothDevice> bluetoothDeviceList;
-    private ListView blueToothDeviceListView;
+    public Set<BluetoothDevice> bluetoothDeviceList;
+    private RecyclerView blueToothDeviceListView;
+    private RecyclerView.Adapter recyclerViewAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
         bluetoothReceiver = new BluetoothReceiver();
         bluetoothDeviceList = bluetoothAdapter.getBondedDevices();
-        blueToothDeviceListView = findViewById(R.id.blueToothDevices);
+        blueToothDeviceListView = findViewById(R.id.bluetoothDeviceList);
 
-      //  blueToothDeviceListView.setAdapter();
+        recyclerViewAdapter = new ListViewAdapter(bluetoothDeviceList);
+        blueToothDeviceListView.setAdapter(recyclerViewAdapter);
 
         //configure BlueTooth IntentFilter
         IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
