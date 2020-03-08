@@ -13,11 +13,11 @@ class ListViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
     textView = itemView.findViewById(R.id.BoundedDevice);
     }
-    protected void setDeviceNameAdress(String deviceNameAdress){
-        textView.setText(deviceNameAdress);
+    protected void setDeviceNameAddress(String deviceNameAddress){
+        textView.setText(deviceNameAddress);
     }
 
-    public String getDeviceNameAdress(){
+    public String getDeviceNameAddress(){
         return textView.getText().toString();
     }
 

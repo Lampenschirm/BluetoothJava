@@ -27,8 +27,8 @@ public class ListViewAdapter  extends RecyclerView.Adapter<ListViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
         BluetoothDevice[] bluetoothDeviceArray = (BluetoothDevice[])bluetoothDeviceSet.toArray();
-        String deviceNameAdress = bluetoothDeviceArray[position].getName() + bluetoothDeviceArray[position].getAddress();
-        holder.setDeviceNameAdress(deviceNameAdress);
+        String deviceNameAddress = bluetoothDeviceArray[position].getName() + bluetoothDeviceArray[position].getAddress();
+        holder.setDeviceNameAddress(deviceNameAddress);
     }
 
     @Override
