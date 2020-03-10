@@ -18,8 +18,10 @@
         android:id="@+id/bluetoothDeviceList"
         android:layout_width="469dp"
         android:layout_height="689dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="49dp" />
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
 
 

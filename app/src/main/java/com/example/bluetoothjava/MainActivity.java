@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
@@ -51,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
         bluetoothReceiver = new BluetoothReceiver();
         bluetoothDeviceList = bluetoothAdapter.getBondedDevices();
-        blueToothDeviceListView = findViewById(R.id.bluetoothDeviceList);
 
+        blueToothDeviceListView = findViewById(R.id.bluetoothDeviceList);
+        blueToothDeviceListView.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAdapter = new ListViewAdapter(bluetoothDeviceList);
         blueToothDeviceListView.setAdapter(recyclerViewAdapter);
 
