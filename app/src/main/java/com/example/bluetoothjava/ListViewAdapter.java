@@ -8,31 +8,36 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class ListViewAdapter  extends RecyclerView.Adapter<ListViewHolder> {
 
-    private final Set<BluetoothDevice> bluetoothDeviceSet;
+
+   private List<String> bluetoothDeviceArray;
 
     protected ListViewAdapter(Set<BluetoothDevice> bluetoothDeviceSet){
-        this.bluetoothDeviceSet = bluetoothDeviceSet;
+        bluetoothDeviceArray = new ArrayList<String>();
+        for(BluetoothDevice bluetoothDevice: bluetoothDeviceSet){
+            bluetoothDeviceArray.add(bluetoothDevice.getName()+bluetoothDevice.getAddress());
+        }
     }
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(viewType,parent);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout,parent,false);
         return new ListViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
-        BluetoothDevice[] bluetoothDeviceArray = (BluetoothDevice[])bluetoothDeviceSet.toArray();
-        String deviceNameAddress = bluetoothDeviceArray[position].getName() + bluetoothDeviceArray[position].getAddress();
+        String deviceNameAddress = bluetoothDeviceArray.get(position);
         holder.setDeviceNameAddress(deviceNameAddress);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return bluetoothDeviceArray.size();
     }
 }
