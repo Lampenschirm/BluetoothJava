@@ -16,6 +16,8 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     public Set<BluetoothDevice> bluetoothDeviceList;
     private RecyclerView blueToothDeviceListView;
     private RecyclerView.Adapter recyclerViewAdapter;
+    private Button buttonGetBoundedDevices;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +54,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
         bluetoothReceiver = new BluetoothReceiver();
-        bluetoothDeviceList = bluetoothAdapter.getBondedDevices();
 
         blueToothDeviceListView = findViewById(R.id.bluetoothDeviceList);
         blueToothDeviceListView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewAdapter = new ListViewAdapter(bluetoothDeviceList);
-        blueToothDeviceListView.setAdapter(recyclerViewAdapter);
+
+        buttonGetBoundedDevices = findViewById(R.id.buttonGetBoundedDevice);
+        buttonGetBoundedDevices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bluetoothDeviceList = bluetoothAdapter.getBondedDevices();
+                recyclerViewAdapter = new ListViewAdapter(bluetoothDeviceList);
+                blueToothDeviceListView.setAdapter(recyclerViewAdapter);
+            }
+        });
+
 
         //configure BlueTooth IntentFilter
         IntentFilter intentFilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
