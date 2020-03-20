@@ -18,41 +18,64 @@ import java.util.UUID;
 public class ConnectBluetoothDeviceThread extends Thread {
     private  BluetoothSocket hc06BluetoothDeviceSocket;
     private static final UUID HC06 = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    OutputStream outputStream;
-    InputStream inputStream;
+    private OutputStream outputStream;
+    private InputStream inputStream;
+    private BluetoothDevice hc06BluetoothDevice;
+    private BluetoothAdapter bluetoothAdapter;
 
     public ConnectBluetoothDeviceThread(String deviceAdress)  {
-        BluetoothSocket tmp;
-        BluetoothDevice hc06BluetoothDevice;
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         hc06BluetoothDevice = bluetoothAdapter.getRemoteDevice(deviceAdress);
         try {
-            tmp = hc06BluetoothDevice.createRfcommSocketToServiceRecord(HC06);
-            hc06BluetoothDeviceSocket =tmp;
+            hc06BluetoothDeviceSocket = hc06BluetoothDevice.createRfcommSocketToServiceRecord(HC06);
+
         }
         catch (Exception e){
             Log.e("Connection", e.toString());
         }
-        try{
-            inputStream = hc06BluetoothDeviceSocket.getInputStream();
-        }catch(Exception e){
-            Log.e("Read", "could not get InputStream");
-        }
-        try{
-            outputStream = hc06BluetoothDeviceSocket.getOutputStream();
-        }catch (Exception e){
-            Log.e("Write", "could not get OutputStream" );
-        }
+        setupStreams();
 
     }
+
+
+
     public void run(){
         try {
-            hc06BluetoothDeviceSocket.connect();
+            if(hc06BluetoothDeviceSocket.getConnectionType() ==1){
+            if(!hc06BluetoothDeviceSocket.isConnected()){
+                hc06BluetoothDeviceSocket.connect();
+            }
+            }
         }catch (Exception e){
             Log.e("Connection", e.toString());
+            if(e.toString().compareTo("java.io.IOException: socket closed") ==0){
+                try {
+                    hc06BluetoothDeviceSocket = hc06BluetoothDevice.createRfcommSocketToServiceRecord(HC06);
+                    hc06BluetoothDeviceSocket.connect();
+                }
+                catch (Exception e1){
+                    Log.e("Connection", e1.toString());
+                }
+                setupStreams();
+            }
         }
 
     }
+
+    private void setupStreams() {
+        try {
+            inputStream = hc06BluetoothDeviceSocket.getInputStream();
+        } catch (Exception e1) {
+            Log.e("Read", "could not get InputStream");
+        }
+        try {
+            outputStream = hc06BluetoothDeviceSocket.getOutputStream();
+        } catch (Exception e1) {
+            Log.e("Write", "could not get OutputStream");
+        }
+    }
+
     public void close(){
         try {
             hc06BluetoothDeviceSocket.close();
