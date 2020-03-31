@@ -40,4 +40,6 @@ public class ListViewAdapter  extends RecyclerView.Adapter<ListViewHolder> {
     public int getItemCount() {
         return bluetoothDeviceArray.size();
     }
+
+
 }

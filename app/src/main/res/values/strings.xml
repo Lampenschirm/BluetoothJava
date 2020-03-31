@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">BluetoothJava</string>
+    <string name="DeviceName">TextView</string>
+    <string name="write_data">Write Data</string>
+    <string name="insert_data">insert data</string>
+    <string name="button_write_data">Write Data</string>
+    <string name="button_close_connection">Close Connection</string>
+    <string name="button_create_connection">Create Connection</string>
 </resources>

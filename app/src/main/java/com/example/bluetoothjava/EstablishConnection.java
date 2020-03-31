@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 public class EstablishConnection extends AppCompatActivity {
 
     @Override
@@ -16,17 +18,17 @@ public class EstablishConnection extends AppCompatActivity {
         setContentView(R.layout.activity_establish_connection);
         Bundle extras = getIntent().getExtras();
         final ConnectBluetoothDeviceThread connectBluetoothDeviceThread;
-        final Button buttonCloseConnection= (Button) findViewById(R.id.buttonCloseConnection);
-        final Button buttonWriteData= (Button) findViewById(R.id.buttonWriteData);
-        final Button buttonCreateConnection =(Button) findViewById(R.id.buttonCreateConnection);
+        final Button buttonCloseConnection=  findViewById(R.id.buttonCloseConnection);
+        final Button buttonWriteData= findViewById(R.id.buttonWriteData);
+        final Button buttonCreateConnection = findViewById(R.id.buttonCreateConnection);
         String blueToothDevice = null;
         if(extras != null){
-            blueToothDevice = extras.get("com.example.bluetoothjava.MESSAGE").toString();
+            blueToothDevice = Objects.requireNonNull(extras.get("com.example.bluetoothjava.MESSAGE"),"Messag from Main Activity must be not nul").toString();
             TextView textView = findViewById(R.id.textView);
             textView.setText(blueToothDevice);
 
         }
-        connectBluetoothDeviceThread = new  ConnectBluetoothDeviceThread(blueToothDevice.substring(blueToothDevice.length()-17));
+        connectBluetoothDeviceThread = new  ConnectBluetoothDeviceThread(Objects.requireNonNull(blueToothDevice,"BluetoothDevice Object is null").substring(blueToothDevice.length()-17));
         connectBluetoothDeviceThread.start();
 
         buttonCloseConnection.setOnClickListener(new View.OnClickListener() {
@@ -49,8 +51,11 @@ public class EstablishConnection extends AppCompatActivity {
         buttonCreateConnection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                connectBluetoothDeviceThread.run();
+                connectBluetoothDeviceThread.start();
             }
         });
+
+        ViewCustomObject circle =  findViewById(R.id.Circle);
+        circle.setOnTouchListener( circle);
     }
 }
