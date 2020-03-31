@@ -22,6 +22,10 @@ public class ViewCustomObject extends View implements View.OnTouchListener {
     private int innerCirclePositionY;
     private int outerCirclePositionX;
     private int outerCirclePositionY;
+    private final int innerCirclePositionXReset;
+    private final int innerCirclePositionYReset;
+    private final int outerCirclePositionXReset;
+    private final int outerCirclePositionYReset;
 
     protected GestureDetector gesture;
 
@@ -65,12 +69,7 @@ public class ViewCustomObject extends View implements View.OnTouchListener {
     }
 
     public void setInnerCirclePositionY(int innerCirclePositionY) {
-        int upperBoundary = 600-innerCircleRadius;
-        int downBoundary = innerCircleRadius;
-        if(innerCirclePositionY>=upperBoundary){
-            this.innerCirclePositionY =upperBoundary;
-        }
-        else this.innerCirclePositionY = Math.max(innerCirclePositionY, downBoundary);
+        this.innerCirclePositionY = innerCirclePositionY;
         invalidate();
         requestLayout();
     }
@@ -109,21 +108,16 @@ public class ViewCustomObject extends View implements View.OnTouchListener {
         try{
             outerCircleRadius= array.getInteger(R.styleable.ViewCustomObject_outerCircleRadius,200);
             innerCircleRadius= array.getInteger(R.styleable.ViewCustomObject_innerCircleRadius,100);
-            innerCirclePositionX = array.getInteger(R.styleable.ViewCustomObject_innerCirclePositionX, 200);
-            innerCirclePositionY = array.getInteger(R.styleable.ViewCustomObject_innerCirclePositionY, 200);
-            outerCirclePositionX = array.getInteger(R.styleable.ViewCustomObject_outerCirclePositionX, 200);
-            outerCirclePositionY = array.getInteger(R.styleable.ViewCustomObject_outerCirclePositionY, 200);
+            innerCirclePositionXReset = innerCirclePositionX = array.getInteger(R.styleable.ViewCustomObject_innerCirclePositionX, 200);
+            innerCirclePositionYReset = innerCirclePositionY = array.getInteger(R.styleable.ViewCustomObject_innerCirclePositionY, 200);
+            outerCirclePositionXReset = outerCirclePositionX = array.getInteger(R.styleable.ViewCustomObject_outerCirclePositionX, 200);
+            outerCirclePositionYReset =outerCirclePositionY = array.getInteger(R.styleable.ViewCustomObject_outerCirclePositionY, 200);
         }finally {
             array.recycle();
         }
 
         gesture = new GestureDetector(context, new JoystickGestureDetectorListener(this));
     }
-
-    /*@Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
-    }*/
 
 
     private void init(){
@@ -151,7 +145,36 @@ public class ViewCustomObject extends View implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        return gesture.onTouchEvent(event);
+
+        if(event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_OUTSIDE){
+            resetCustomViewObject();
+            return false;
+        }
+        else {
+            return gesture.onTouchEvent(event);
+        }
+    }
+
+    public int getInnerCirclePositionXReset() {
+        return innerCirclePositionXReset;
+    }
+
+    public int getInnerCirclePositionYReset() {
+        return innerCirclePositionYReset;
+    }
+
+    public int getOuterCirclePositionXReset() {
+        return outerCirclePositionXReset;
+    }
+
+    public int getOuterCirclePositionYReset() {
+        return outerCirclePositionYReset;
+    }
+    public void resetCustomViewObject(){
+        innerCirclePositionX = innerCirclePositionXReset;
+        innerCirclePositionY = innerCirclePositionYReset;
+        outerCirclePositionX = outerCirclePositionXReset;
+        outerCirclePositionY = outerCirclePositionYReset;
     }
 }
 

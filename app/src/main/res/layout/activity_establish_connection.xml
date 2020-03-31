@@ -77,18 +77,21 @@
 
     <com.example.bluetoothjava.ViewCustomObject
         android:id="@+id/Circle"
-    custom:innerCircle="@color/innerCircleColor"
-    custom:innerCirclePositionX="300"
-    custom:innerCirclePositionY="300"
-    custom:innerCircleRadius="100"
-    custom:layout_constraintBottom_toBottomOf="parent"
-    custom:layout_constraintStart_toStartOf="parent"
-    custom:outerCircle="@color/outerCircleColor"
-    custom:outerCirclePositionX="300"
-    custom:outerCirclePositionY="300"
-    custom:outerCircleRadius="300"
         android:layout_width="230dp"
-        android:layout_height="230dp"/>
+        android:layout_height="230dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        custom:innerCircle="@color/innerCircleColor"
+        custom:innerCirclePositionX="300"
+        custom:innerCirclePositionY="600"
+        custom:innerCircleRadius="100"
+        custom:outerCircle="@color/outerCircleColor"
+        custom:outerCirclePositionX="300"
+        custom:outerCirclePositionY="600"
+        custom:outerCircleRadius="300" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

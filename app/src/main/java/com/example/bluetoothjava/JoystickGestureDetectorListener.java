@@ -13,6 +13,7 @@ public class JoystickGestureDetectorListener extends GestureDetector.SimpleOnGes
 
     @Override
     public boolean onDown(MotionEvent e) {
+        Log.i("MotionAction",Integer.toString(e.getAction()));
         return true;
     }
 
@@ -24,14 +25,31 @@ public class JoystickGestureDetectorListener extends GestureDetector.SimpleOnGes
         Log.i("measurement","Bottom: " + joyStick.getBottom());
         joyStick.getBottom();
 
+        int currentY = joyStick.getInnerCirclePositionY() - (int)distanceY;
+        int currentX = joyStick.getInnerCirclePositionX() - (int)distanceX;
 
-        Log.i("Distanz","Distanz Y: "+distanceY);
+        int vectorX = currentX - joyStick.getInnerCirclePositionXReset();
+        int vectorY = currentY - joyStick.getInnerCirclePositionYReset();
+
+        double radius =  Math.sqrt(Math.pow(vectorX,2)+Math.pow(vectorY,2));
+
+         double boundaryRadius = joyStick.getOuterCircleRadiusRadius()-joyStick.getInnerCircleRadius();
+        if(radius <= boundaryRadius){
+            joyStick.setInnerCirclePositionX(currentX);
+            joyStick.setInnerCirclePositionY(currentY);
+            return false;
+        }
+
+        /*Log.i("Distanz","Distanz Y: "+distanceY);
         if(e1.getY() < (joyStick.getOuterCirclePositionY()+joyStick.getOuterCircleRadiusRadius()) && e1.getY() > 0)
         {
             joyStick.setInnerCirclePositionY(joyStick.getInnerCirclePositionY() - (int) distanceY);
         }
         Log.i("Distanz","Distanz X: "+distanceX);
-        joyStick.setInnerCirclePositionX(joyStick.getInnerCirclePositionX() - (int)distanceX);
+        if(e1.getX() < (joyStick.getOuterCirclePositionX()+ joyStick.getOuterCircleRadiusRadius()) && e1.getX() > 0){
+            joyStick.setInnerCirclePositionX((joyStick.getInnerCirclePositionX() -(int)distanceX));
+        }
+        joyStick.setInnerCirclePositionX(joyStick.getInnerCirclePositionX() - (int)distanceX);*/
        /* Log.i("MotionEvent", "X-Koordinate Event1: "+e1.getX());
         Log.i("MotionEvent", "Y-Koordinate Event1: "+e1.getY());
         Log.i("MotionEvent", "X-Koordinate Event2: "+e1.getX());
