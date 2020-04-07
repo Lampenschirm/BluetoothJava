@@ -4,9 +4,23 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
+import java.util.ArrayList;
+import java.util.List;
+
+interface CoordinateChangedListener{
+    void onChangedCoordinates(int originX, int originY, int newX, int newY);
+}
+
 public class JoystickGestureDetectorListener extends GestureDetector.SimpleOnGestureListener {
 
     private ViewCustomObject joyStick;
+
+    private List<CoordinateChangedListener> listeners = new ArrayList<CoordinateChangedListener>();
+
+    public void addListener(CoordinateChangedListener toAdd) {
+        listeners.add(toAdd);
+    }
+
     JoystickGestureDetectorListener(ViewCustomObject viewCustomObject) {
         joyStick = viewCustomObject;
     }
@@ -34,28 +48,17 @@ public class JoystickGestureDetectorListener extends GestureDetector.SimpleOnGes
         double radius =  Math.sqrt(Math.pow(vectorX,2)+Math.pow(vectorY,2));
 
          double boundaryRadius = joyStick.getOuterCircleRadiusRadius()-joyStick.getInnerCircleRadius();
+         Log.i("Events","OnScroll");
         if(radius <= boundaryRadius){
+            Log.i("Events","ChangePosition");
             joyStick.setInnerCirclePositionX(currentX);
             joyStick.setInnerCirclePositionY(currentY);
-            return false;
+            for (CoordinateChangedListener hl : listeners)
+                hl.onChangedCoordinates(joyStick.getInnerCirclePositionXReset(),joyStick.getInnerCirclePositionYReset(),currentX,currentY);
+            return true;
         }
 
-        /*Log.i("Distanz","Distanz Y: "+distanceY);
-        if(e1.getY() < (joyStick.getOuterCirclePositionY()+joyStick.getOuterCircleRadiusRadius()) && e1.getY() > 0)
-        {
-            joyStick.setInnerCirclePositionY(joyStick.getInnerCirclePositionY() - (int) distanceY);
-        }
-        Log.i("Distanz","Distanz X: "+distanceX);
-        if(e1.getX() < (joyStick.getOuterCirclePositionX()+ joyStick.getOuterCircleRadiusRadius()) && e1.getX() > 0){
-            joyStick.setInnerCirclePositionX((joyStick.getInnerCirclePositionX() -(int)distanceX));
-        }
-        joyStick.setInnerCirclePositionX(joyStick.getInnerCirclePositionX() - (int)distanceX);*/
-       /* Log.i("MotionEvent", "X-Koordinate Event1: "+e1.getX());
-        Log.i("MotionEvent", "Y-Koordinate Event1: "+e1.getY());
-        Log.i("MotionEvent", "X-Koordinate Event2: "+e1.getX());
-        Log.i("MotionEvent", "Y-Koordinate Event2: "+e1.getY());*/
-        return true;
-        //return super.onScroll(e1, e2, distanceX, distanceY);
+       return super.onScroll(e1, e2, distanceX, distanceY);
     }
 
 

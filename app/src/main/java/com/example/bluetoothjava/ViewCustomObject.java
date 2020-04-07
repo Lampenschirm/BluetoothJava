@@ -1,16 +1,26 @@
 package com.example.bluetoothjava;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.textclassifier.TextClassifierEvent;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+
+
+
 
 public class ViewCustomObject extends View implements View.OnTouchListener {
 
@@ -26,8 +36,10 @@ public class ViewCustomObject extends View implements View.OnTouchListener {
     private final int innerCirclePositionYReset;
     private final int outerCirclePositionXReset;
     private final int outerCirclePositionYReset;
+    Context myContext;
 
     protected GestureDetector gesture;
+
 
 
     public int getOuterCircleRadiusRadius() {
@@ -102,7 +114,7 @@ public class ViewCustomObject extends View implements View.OnTouchListener {
     public ViewCustomObject(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-
+        myContext = context;
 
         TypedArray array = context.getTheme().obtainStyledAttributes(attrs,R.styleable.ViewCustomObject,0,0);
         try{
@@ -116,7 +128,10 @@ public class ViewCustomObject extends View implements View.OnTouchListener {
             array.recycle();
         }
 
-        gesture = new GestureDetector(context, new JoystickGestureDetectorListener(this));
+        JoystickGestureDetectorListener joystickGestureDetectorListener = new JoystickGestureDetectorListener(this);
+        joystickGestureDetectorListener.addListener((CoordinateChangedListener) context);
+        gesture = new GestureDetector(context, joystickGestureDetectorListener);
+
     }
 
 
@@ -130,24 +145,30 @@ public class ViewCustomObject extends View implements View.OnTouchListener {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        Log.i("ActivitySize", "w: "+ Integer.toString(DensityUtil.dip2px(myContext,w)) + " h: " + Integer.toString(h));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         init();
-        //outerCircle
-        canvas.drawCircle(outerCirclePositionX,outerCirclePositionY,outerCircleRadius, outerCircleColor);
+         //outerCircle
+        canvas.drawCircle(outerCirclePositionX,outerCirclePositionY ,outerCircleRadius, outerCircleColor);
         //innerCircle
         canvas.drawCircle(innerCirclePositionX,innerCirclePositionY,innerCircleRadius,innerCircleColor);
+
+
     }
 
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-
-        if(event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_OUTSIDE){
+        Log.i("Events",Integer.toString(event.getAction()));
+        if(event.getAction() == MotionEvent.ACTION_UP){
             resetCustomViewObject();
+            Log.i("Events", "ACTION_UP");
+            invalidate();
+            requestLayout();
             return false;
         }
         else {
