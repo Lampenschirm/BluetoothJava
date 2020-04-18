@@ -61,7 +61,8 @@ public class JoystickGestureDetectorListener extends GestureDetector.SimpleOnGes
             return true;
         }
 
-       return super.onScroll(e1, e2, distanceX, distanceY);
+       //return super.onScroll(e1, e2, distanceX, distanceY);
+        return true;
     }
 
 
