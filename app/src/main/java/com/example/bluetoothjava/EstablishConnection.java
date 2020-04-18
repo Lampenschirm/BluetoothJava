@@ -67,7 +67,8 @@ public class EstablishConnection extends AppCompatActivity implements Coordinate
 
     @Override
     public void onChangedCoordinates(int originX, int originY, int newX, int newY) {
-        connectBluetoothDeviceThread.writeData(Integer.toString(newY - originY));
-        Log.i("Coordinates", "Changed Value: " + Integer.toString(originY-newY ));
+        String changedCoordinates = Integer.toString(newX - originX) + ';' + Integer.toString(newY - originY) +"\n";
+        connectBluetoothDeviceThread.writeData(changedCoordinates);
+        Log.i("Coordinates", "Changed Value: " + changedCoordinates);
     }
 }

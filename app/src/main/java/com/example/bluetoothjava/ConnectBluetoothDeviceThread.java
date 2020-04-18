@@ -99,8 +99,9 @@ public class ConnectBluetoothDeviceThread extends Thread {
 
         try{
             outputStream.write(message.getBytes());
+            outputStream.flush();
         }catch(Exception e){
-            Log.e("Write","Writing doesn not work");
+            Log.e("Write","Writing doesn't work");
         }
 
 

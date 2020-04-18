@@ -197,5 +197,7 @@ public class ViewCustomObject extends View implements View.OnTouchListener {
         outerCirclePositionX = outerCirclePositionXReset;
         outerCirclePositionY = outerCirclePositionYReset;
     }
+
+
 }
 

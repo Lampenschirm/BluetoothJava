@@ -3,6 +3,7 @@ package com.example.bluetoothjava;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ interface CoordinateChangedListener{
     void onChangedCoordinates(int originX, int originY, int newX, int newY);
 }
 
-public class JoystickGestureDetectorListener extends GestureDetector.SimpleOnGestureListener {
+public class JoystickGestureDetectorListener extends GestureDetector.SimpleOnGestureListener  {
 
     private ViewCustomObject joyStick;
 
@@ -30,6 +31,8 @@ public class JoystickGestureDetectorListener extends GestureDetector.SimpleOnGes
         Log.i("MotionAction",Integer.toString(e.getAction()));
         return true;
     }
+
+
 
 
     @Override
@@ -60,6 +63,8 @@ public class JoystickGestureDetectorListener extends GestureDetector.SimpleOnGes
 
        return super.onScroll(e1, e2, distanceX, distanceY);
     }
+
+
 
 
 }
